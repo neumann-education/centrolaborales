@@ -12,49 +12,59 @@
         <form id="registroForm">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" required>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
             </div>
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
-                <input type="text" class="form-control" id="apellido" required>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
             </div>
             <div class="form-group">
                 <label for="dni">DNI:</label>
-                <input type="text" class="form-control" id="dni" required>
+                <input type="text" class="form-control" id="dni" name="dni" required>
             </div>
             <div class="form-group">
                 <label for="correo">Correo Electrónico:</label>
-                <input type="email" class="form-control" id="correo" required>
+                <input type="email" class="form-control" id="correo" name="correo" required>
             </div>
             <div class="form-group">
                 <label for="actividades">Describa Actividades:</label>
-                <textarea class="form-control" id="actividades" rows="3" required></textarea>
+                <textarea class="form-control" id="actividades" name="actividades" rows="3" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Enviar Cuestionario</button>
         </form>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    document.getElementById('registroForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-        // Recoger datos del formulario
-        var formData = new FormData(this);
-        
-        // Enviar datos al Google Apps Script
-        fetch('AKfycbxGsgXa-9qNTXfh0jll9NIyzF8xRe8ZG3FTfXwVnw2PSWtiWxs0odBvmzxzb2qcKQT4', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data); // Muestra la respuesta del script
-            this.reset(); // Reinicia el formulario
-        })
-        .catch(error => console.error('Error:', error));
-    });
-</script>
+            // Recoger datos del formulario
+            const formData = new FormData(this);
+
+            // Convertir FormData a un objeto JSON
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Enviar datos al Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbysQi2MVvEbZAb4sstWgw-QhvQLjBgQLij_gT87pxBh257JP6ct14gbOAtKXXutukyW/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Muestra la respuesta del script
+                this.reset(); // Reinicia el formulario
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
