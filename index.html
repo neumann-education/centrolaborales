@@ -36,12 +36,25 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('registroForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Aquí puedes agregar el código para enviar los datos a Google Sheets
-            alert('Formulario enviado');
-        });
-    </script>
+<script>
+    document.getElementById('registroForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Recoger datos del formulario
+        var formData = new FormData(this);
+        
+        // Enviar datos al Google Apps Script
+        fetch('AKfycbxGsgXa-9qNTXfh0jll9NIyzF8xRe8ZG3FTfXwVnw2PSWtiWxs0odBvmzxzb2qcKQT4', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // Muestra la respuesta del script
+            this.reset(); // Reinicia el formulario
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
 </body>
 </html>
